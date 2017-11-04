@@ -5,6 +5,8 @@ import './board.css';
 import BoardSpace from './board-space';
 
 export default class Board extends React.Component {
+	state = { turn: 1, boardValues: [], square: '' }
+
 	static propTypes = {
 		length: PropTypes.number.isRequired
 	};
@@ -13,18 +15,23 @@ export default class Board extends React.Component {
 		length: 3 
 	};
 
-	handleSpaceClick() {
-		console.log('I have been clicked!');
+	updateBoardValues(space, piece){
+		let boardValue = space + piece
+		this.setState({
+			boardValues: this.state.boardValues.concat([boardValue])
+		})
 	}
 
-	generateRandBoardValue() {
-		const rand = Math.random() * 3;
-
-		if (rand < 1) {
-			return 'X';
-		} else if (rand < 2) {
-			return 'O';
-		} else return ' ';
+	toggleTurn() {
+		let turnValue;
+		if (this.state.turn === 1){
+			turnValue = 2
+		}else {
+			turnValue = 1
+		}
+		this.setState({
+			turn: turnValue
+		})
 	}
 
 	getBoardSpaceClass(row, col, length) {
@@ -34,14 +41,17 @@ export default class Board extends React.Component {
 			classes.push('first_row');
 		} else if (row === length - 1) {
 			classes.push('last_row');
+		} else {
+			classes.push('middle_row')
 		}
 
 		if (col === 0) {
 			classes.push('first_col');
 		} else if(col === length - 1) {
 			classes.push('last_col');
+		} else{
+			classes.push('middle_col')
 		}
-
 		return classes.join(' ');
 	}
 
@@ -56,8 +66,9 @@ export default class Board extends React.Component {
 				cols.push(
 					<BoardSpace 
 						key={`${row}_${col}`}
-						value={this.generateRandBoardValue()}
-						onClick={this.handleSpaceClick}
+						updateBoardValues = {this.updateBoardValues.bind(this)}
+						turn = {this.state.turn}
+						toggleTurn={this.toggleTurn.bind(this)}
 						className={this.getBoardSpaceClass(row, col, length)}
 					/>
 				);
@@ -72,6 +83,8 @@ export default class Board extends React.Component {
 	render() {
 		return (
 			<div className="board_wrap">
+				<h1> Player {this.state.turn}'s Turn </h1>
+				<p> Moves: {this.state.boardValues} </p>
 				{this.buildBoard()}
 			</div>
 
