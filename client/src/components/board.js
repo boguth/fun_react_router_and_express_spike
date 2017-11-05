@@ -5,7 +5,8 @@ import './board.css';
 import BoardSpace from './board-space';
 
 export default class Board extends React.Component {
-	state = { turn: 1, boardValues: [], square: '' }
+	// set boardValues to a hash, and have the hash win conditions in the server (for now)
+	state = { turn: 1, boardValues: [] }
 
 	static propTypes = {
 		length: PropTypes.number.isRequired
@@ -15,11 +16,29 @@ export default class Board extends React.Component {
 		length: 3 
 	};
 
-	updateBoardValues(space, piece){
-		let boardValue = space + piece
+	winCondition(){	
+		fetch('http://127.0.0.1:3001/api/winCondition', {
+  		method: 'POST',
+  		headers: {
+    		'Accept': 'application/json',
+    		'Content-Type': 'application/json',
+  		},
+  	body: JSON.stringify({
+    	firstParam: 'yourValue',
+    	secondParam: 'yourOtherValue',
+  		})
+		}).then(function(response) {
+            response.json().then(function(data){
+               console.log(data)
+             })
+          })
+	}
+
+	updateBoardValues(boardMove){
 		this.setState({
-			boardValues: this.state.boardValues.concat([boardValue])
+			boardValues: this.state.boardValues.concat([boardMove])
 		})
+		this.winCondition()
 	}
 
 	toggleTurn() {
@@ -84,7 +103,7 @@ export default class Board extends React.Component {
 		return (
 			<div className="board_wrap">
 				<h1> Player {this.state.turn}'s Turn </h1>
-				<p> Moves: {this.state.boardValues} </p>
+				<p> Moves: {this.state.boardValues}</p>
 				{this.buildBoard()}
 			</div>
 

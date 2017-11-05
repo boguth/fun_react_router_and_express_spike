@@ -15,7 +15,7 @@ export default class BoardSpace extends React.Component {
 
 	updateValue(){
 		let newGamePiece
-		let value
+		let move
 		if(this.props.turn === 1){
 			newGamePiece = 'X'
 		} else {
@@ -26,7 +26,8 @@ export default class BoardSpace extends React.Component {
 				gamePiece: newGamePiece
 			})
 		}
-		this.props.updateBoardValues(this.props.className, newGamePiece)
+		move = this.props.className.replace(/\s/g, '') + newGamePiece
+		this.props.updateBoardValues(move, newGamePiece)
 	}
 
 	handleClick() {
