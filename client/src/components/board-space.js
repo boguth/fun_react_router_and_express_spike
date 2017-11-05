@@ -36,6 +36,7 @@ export default class BoardSpace extends React.Component {
 	}
 
 	render() {
+		// Disable onclick handler after first click. 
 		return (
 			<div className={`board_space ${this.props.className}`}  onClick={this.handleClick.bind(this)}>
 				<span>{this.state.gamePiece}</span>
