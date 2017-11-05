@@ -58,3 +58,4 @@ npm start
 It may automatically open a browser window, if not, open a browser pointed to http://127.0.0.1:3000. The client will automatically change through updates to code. Pay attention to the terminal in case of errors that cause the browser window to appear stuck.
 
 This is using the [create-react-app](https://github.com/facebookincubator/create-react-app/) project bootstrapper. 
+
